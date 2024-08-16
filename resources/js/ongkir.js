@@ -1,5 +1,4 @@
-import $ from 'jquery';
-import select2 from 'select2';
+
 
 $(document).ready(function () {
     $('select[name="province_origin"]').on('change', function() {
@@ -21,25 +20,25 @@ $(document).ready(function () {
         }
     });
 
-    $("#city_destination").select2({
+    $('#city_destination').select2({
         ajax: {
             url: "/api/cities",
             type: "POST",
             dataType: "json",
             delay: 150,
             data: function (params) {
-                return {
+            return {
                     _token: $('meta[name="csrf-token"]').attr('content'),
                     search: $.trim(params.term)
-                };
+            }
             },
             processResults: function (response) {
                 return {
                     results: response
                 };
             },
-            cache: true 
-
+            cache: true
         }
     });
+               
 });
