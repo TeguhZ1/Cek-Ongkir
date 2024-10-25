@@ -3,24 +3,25 @@
 @section('content')
 <div class="container">
 
+    <!-- Informasi Kota Asal dan Kota Tujuan -->
     <div class="row justify-content-center mb-4">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Destination</div>
 
                 <div class="card-body">
-                    <table class="table">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <td>Kota/Kab Asal</td>
-                                <td>Kota/Kab Tujuan</td>
-                                <td>Berat</td>
+                                <th>Kota/Kab Asal</th>
+                                <th>Kota/Kab Tujuan</th>
+                                <th>Berat</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{ $origin->title }}</td>
-                                <td>{{ $destination->title }}</td>
+                                <td>{{ $origin['city_name'] }}</td> <!-- Pastikan properti ini sesuai dengan data API -->
+                                <td>{{ $destination['city_name'] }}</td> <!-- Pastikan properti ini sesuai dengan data API -->
                                 <td>{{ $weight }}gr</td>
                             </tr>
                         </tbody>
@@ -30,27 +31,34 @@
         </div>
     </div>
 
-    @foreach ($result as $cost)
+    <!-- Hasil Ongkos Kirim dari Masing-Masing Kurir -->
+    @foreach ($result as $courier)
         <div class="row justify-content-center mb-4">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ $cost[0]['name'] }}</div>
+                    <div class="card-header">{{ $courier[0]['name'] }}</div> <!-- Nama Kurir -->
 
                     <div class="card-body">
-                        <table class="table">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <td>Layanan</td>
-                                    <td>Estimasi Hari</td>
-                                    <td>Ongkir</td>
+                                    <th>Layanan</th>
+                                    <th>Estimasi Hari</th>
+                                    <th>Ongkir</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($cost[0]['costs'] as $cost)
+                                @foreach ($courier[0]['costs'] as $cost)
                                     <tr>
-                                        <td>{{ $cost['description'] }} ({{$cost['service']}})</td>
-                                        <td>{{ $cost['cost'][0]['etd'] }}</td>
-                                        <td>Rp{{ number_format($cost['cost'][0]['value'], 0, ',', '.') }}</td>
+                                        <td>{{ $cost['description'] }} ({{ $cost['service'] }})</td> <!-- Nama layanan -->
+                                        <td>
+                                            @if ($cost['cost'][0]['etd'] == '') 
+                                                Tidak tersedia
+                                            @else
+                                                {{ $cost['cost'][0]['etd'] }} Hari
+                                            @endif
+                                        </td> <!-- Estimasi hari pengiriman -->
+                                        <td>Rp{{ number_format($cost['cost'][0]['value'], 0, ',', '.') }}</td> <!-- Ongkos kirim -->
                                     </tr>
                                 @endforeach
                             </tbody>

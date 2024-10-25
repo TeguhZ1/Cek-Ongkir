@@ -24,3 +24,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::post('/store', [App\Http\Controllers\HomeController::class, 'store'])->name('store');
 Route::get('/api/province/{id}/cities',[HomeController::class, 'getCities']);
 Route::post('/api/cities',[HomeController::class, 'searchCities']);
+
+Route::get('/api/provinces', [HomeController::class, 'getProvinces']);
+Route::get('/api/cities/{province_id}', [HomeController::class, 'getCities']);
