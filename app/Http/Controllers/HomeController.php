@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Log;
 use App\Models\City;
 use GuzzleHttp\Client;
 use App\Models\Courier;
+use App\Models\History;
 use App\Models\Province;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Kavist\RajaOngkir\Facades\RajaOngkir;
 
@@ -35,38 +38,32 @@ class HomeController extends Controller
 
     public function store(Request $request){
         $courier = $request->input('courier');
-
+        $weight = $request->input('weight');
         $apiKey = env('RAJAONGKIR_API_KEY'); 
-
         $client = new Client();
-
+    
         if ($courier) {
-
             $originResponse = $client->request('GET', 'https://api.rajaongkir.com/starter/city', [
                 'query' => ['id' => $request->city_origin],
-                'headers' => [
-                    'key' => $apiKey
-                ]
+                'headers' => ['key' => $apiKey]
             ]);
             $originData = json_decode($originResponse->getBody(), true);
             $originCity = $originData['rajaongkir']['results'];
-
+    
             $destinationResponse = $client->request('GET', 'https://api.rajaongkir.com/starter/city', [
                 'query' => ['id' => $request->city_destination],
-                'headers' => [
-                    'key' => $apiKey
-                ]
+                'headers' => ['key' => $apiKey]
             ]);
             $destinationData = json_decode($destinationResponse->getBody(), true);
             $destinationCity = $destinationData['rajaongkir']['results'];
-
+    
             $data = [
                 'origin' => $originCity,  
                 'destination' => $destinationCity, 
-                'weight' => 5000,
+                'weight' => $weight,
                 'result' => []
             ];
-
+    
             foreach ($courier as $value) {
                 $ongkirResponse = $client->request('POST', 'https://api.rajaongkir.com/starter/cost', [
                     'form_params' => [
@@ -75,19 +72,17 @@ class HomeController extends Controller
                         'weight' => $data['weight'],
                         'courier' => $value
                     ],
-                    'headers' => [
-                        'key' => $apiKey
-                    ]
+                    'headers' => ['key' => $apiKey]
                 ]);
-
+    
                 $ongkir = json_decode($ongkirResponse->getBody(), true);
                 $data['result'][] = $ongkir['rajaongkir']['results'];
+    
             }
-
+    
             return view('costs')->with($data);
         }
-
-
+    
         return redirect()->back();
     }
 
@@ -104,6 +99,9 @@ class HomeController extends Controller
             return response()->json(['error' => 'Failed to fetch data'], $response->status());
         }
     }
+
+
+
 
     public function getCities($province_id)
     {
@@ -122,12 +120,10 @@ class HomeController extends Controller
 
     public function getCity($id)
     {
-        // Mengambil data dari API RajaOngkir berdasarkan city_id
         $response = Http::withHeaders([
             'key' => env('RAJAONGKIR_API_KEY'),
         ])->get("https://api.rajaongkir.com/starter/city?id=$id");
 
-        // Memastikan respons dari API berhasil
         if ($response->successful()) {
             return $response->json()['rajaongkir']['results'];
         }
@@ -149,7 +145,6 @@ class HomeController extends Controller
 
         $cities = json_decode($response->getBody(), true)['rajaongkir']['results'];
 
-        // Filter cities based on the search term, if provided
         $filteredCities = collect($cities)->filter(function ($city) use ($search) {
             return empty($search) || stripos($city['city_name'], $search) !== false;
         })->map(function ($city) {

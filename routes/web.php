@@ -15,15 +15,16 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::post('/store', [App\Http\Controllers\HomeController::class, 'store'])->name('store');
-Route::get('/api/province/{id}/cities',[HomeController::class, 'getCities']);
-Route::post('/api/cities',[HomeController::class, 'searchCities']);
-
-Route::get('/api/provinces', [HomeController::class, 'getProvinces']);
-Route::get('/api/cities/{province_id}', [HomeController::class, 'getCities']);
+Route::middleware(['is_login'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::post('/store', [HomeController::class, 'store'])->name('store');
+    Route::get('/api/province/{id}/cities',[HomeController::class, 'getCities']);
+    Route::post('/api/cities',[HomeController::class, 'searchCities']);
+    Route::get('/api/cities/{province_id}', [HomeController::class, 'getCities']);
+    Route::get('/api/provinces', [HomeController::class, 'getProvinces']);
+});
