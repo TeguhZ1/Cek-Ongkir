@@ -3,9 +3,9 @@
 @section('content')
 <div class="container">
     <div class="ongkir-header">
-        <h1>Cek Ongkir</h1>
+        <h1><strong>Cek Ongkir</strong></h1>
         <p class="lead">
-            Project Cek Ongkir ke Seluruh Kota dan Kabupaten di Indonesia
+            <strong>Project Cek Ongkir ke Seluruh Kota dan Kabupaten di Indonesia</strong>
         </p>
     </div>
     
@@ -63,7 +63,7 @@
                     <h4 class="text-white"><strong>Formulir Cek Ongkir</strong></h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('store') }}" method="POST">
+                    <form action="{{ route('store') }}" method="POST" id="ongkirForm">
                         @csrf
                         <div class="form-row">
                             <div class="col">
@@ -106,7 +106,7 @@
                         </div>
                         <div class="form-row">
                             <div class="col">
-                                <button type="submit" class="btn btn-primary mb-3 mt-3">Submit</button>
+                                <button type="button" class="btn btn-primary mb-3 mt-3" id="submitButton">Submit</button>
                             </div>
                         </div>
                     </form>
@@ -115,57 +115,33 @@
         </div>
     </div>
 </div>
-
+  
+<script src="js/dom.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('/api/provinces')
-        .then(response => response.json())
-        .then(data => {
-            let provinceSelect = document.getElementById('province_origin');
-            data.forEach(province => {
-                let option = document.createElement('option');
-                option.value = province.province_id;
-                option.textContent = province.province;
-                provinceSelect.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error fetching provinces:', error));
-
-    document.getElementById('province_origin').addEventListener('change', function() {
-        let provinceId = this.value;
-        fetch(`/api/cities/${provinceId}`)
-            .then(response => response.json())
-            .then(data => {
-                let citySelect = document.getElementById('city_origin');
-                citySelect.innerHTML = '<option value="">-</option>'; 
-                data.forEach(city => {
-                    let option = document.createElement('option');
-                    option.value = city.city_id;
-                    option.textContent = city.city_name;
-                    citySelect.appendChild(option);
+    document.getElementById("submitButton").addEventListener("click", function() {
+        Swal.fire({
+            title: "Apa Kamu Yakin?",
+            text: "Apakah datanya semua sudah benar?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Success",
+                    text: "Data berhasil dikirim",
+                    icon: "success"
+                }).then(() => {
+                    document.getElementById("ongkirForm").submit();
                 });
-            })
-            .catch(error => console.error('Error fetching cities:', error));
+            }
+        });
     });
 
-    document.getElementById('province_origin').addEventListener('change', function() {
-        let provinceId = this.value;
-        fetch(`/api/cities/${provinceId}`)
-            .then(response => response.json())
-            .then(data => {
-                let citySelect = document.getElementById('city_destination');
-                citySelect.innerHTML = '<option value="">-</option>'; 
-                data.forEach(city => {
-                    let option = document.createElement('option');
-                    option.value = city.city_id;
-                    option.textContent = city.city_name;
-                    citySelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error fetching cities:', error));
-    });
-});
-</script>    
+</script>
 @endsection
 
   
