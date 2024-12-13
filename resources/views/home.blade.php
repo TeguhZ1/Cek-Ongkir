@@ -1,147 +1,273 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="ongkir-header">
-        <h1><strong>Cek Ongkir</strong></h1>
-        <p class="lead">
-            <strong>Project Cek Ongkir ke Seluruh Kota dan Kabupaten di Indonesia</strong>
-        </p>
-    </div>
-    
-    <div class="row justify-content-center">
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100 mx-2 text-center">
-                <div class="card-header bg-primary text-white">
-                    <h4>Free</h4>
-                </div>
-                <div class="card-body">
-                    <i class="fas fa-truck" style="font-size:80px"></i>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>Cek Ongkir Lebih Mudah</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary"><a href="/register" class="text-decoration-none a-hover">Sign up for free</a></button>
-                </div>
-            </div>
+<div class="min-h-screen bg-cover bg-center bg-no-repeat relative"
+    style="background-image: url('https://plus.unsplash.com/premium_photo-1663950995673-f4916a77ca6d?q=80&w=1975&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')">
+
+    <!-- Lapisan blur -->
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+
+    <!-- Konten -->
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Header Section -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-white mb-4">
+                <i class="fas fa-shipping-fast text-green-400 mr-3"></i>
+                Cek Ongkir
+            </h1>
+            <p class="text-xl text-gray-200 max-w-2xl mx-auto">
+                Cek ongkos kirim ke seluruh wilayah Indonesia dengan cepat dan akurat
+            </p>
         </div>
-    
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100 mx-2 text-center">
-                <div class="card-header bg-success text-white">
-                    <h4>Pro</h4>
-                </div>
-                <div class="card-body">
-                    <i class="fas fa-box" style="font-size:80px"></i>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>Lacak lokasi paket</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Get started</button>
-                </div>
+
+        <!-- Main Card -->
+        <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
+            <!-- Card Header -->
+            <div class="bg-green-500 p-6">
+                <h2 class="text-2xl font-semibold text-white text-center">
+                    <i class="fas fa-calculator mr-2"></i>
+                    Hitung Ongkos Kirim
+                </h2>
             </div>
-        </div>
-    
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100 mx-2 text-center">
-                <div class="card-header bg-info text-white">
-                    <h4>Enterprise</h4>
-                </div>
-                <div class="card-body">
-                    <i class="fas fa-plane-departure" style="font-size:80px"></i>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>Cek Ongkir Pengiriman Internasional</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Contact us</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row justify-content-center mb-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header bg-warning text-center">
-                    <h4 class="text-white"><strong>Formulir Cek Ongkir</strong></h4>
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('store') }}" method="POST" id="ongkirForm">
-                        @csrf
-                        <div class="form-row">
-                            <div class="col">
-                                <h5 class="text-muted">Asal Pengirim:</h5>
-                                <div class="form-group">
-                                    <label for="province_origin">Provinsi</label>
-                                    <select name="province_origin" id="province_origin" class="form-control">
-                                        <option value="">--Provinsi--</option>
-                                    </select>
+
+            <!-- Card Body -->
+            <div class="p-6 lg:p-8">
+                <form action="{{ route('store') }}" method="POST" id="ongkirForm">
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Origin Section -->
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                            <div class="flex items-center mb-6">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-box-open text-green-500 text-2xl"></i>
                                 </div>
-                                <div class="form-group">
-                                    <label for="city_origin">Kota/Kabupaten</label>
-                                    <select name="city_origin" id="city_origin" class="form-control">
-                                        <option value="">-</option>
-                                    </select>
-                                </div>
-                                <h5 class="text-muted mt-3">Tujuan Pengirim:</h5>
-                                <div class="form-group">
-                                    <label for="city_destination">Kota/Kabupaten</label>
-                                    <select name="city_destination" id="city_destination" class="form-control">
-                                        <option value="">-</option>
-                                    </select>
-                                </div>
+                                <h3 class="text-xl font-semibold text-gray-800">Asal Pengiriman</h3>
                             </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="exampleFormControlInput1" class="form-label">Berat Barang:</label>
-                                    <input type="text" class="form-control" id="weight" name="weight" placeholder="Masukkan berat dalam gram" required>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Provinsi</label>
+                                    <select name="province_origin" id="province_origin"
+                                            class="w-full rounded-lg border-gray-200 focus:ring-green-500 focus:border-green-500">
+                                        <option value="">Pilih Provinsi</option>
+                                    </select>
                                 </div>
-                            </div>
-                            <div class="col">
-                                <h5 class="text-muted mt-3">Pilih Expedisi:</h5>
-                                @foreach ($courier as $key => $value)
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="courier-{{ $key }}" name="courier[]" value="{{ $value->code }}">
-                                    <label class="form-check-label" for="courier-{{ $key }}">{{ $value->title }}</label>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Kota/Kabupaten</label>
+                                    <select name="city_origin" id="city_origin"
+                                            class="w-full rounded-lg border-gray-200 focus:ring-green-500 focus:border-green-500">
+                                        <option value="">Pilih Kota</option>
+                                    </select>
                                 </div>
-                                @endforeach
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="col">
-                                <button type="button" class="btn btn-primary mb-3 mt-3" id="submitButton">Submit</button>
+
+                        <!-- Destination Section -->
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                            <div class="flex items-center mb-6">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-map-marker-alt text-green-500 text-2xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold text-gray-800">Tujuan Pengiriman</h3>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Kota/Kabupaten Tujuan</label>
+                                    <select name="city_destination" id="city_destination"
+                                            class="w-full rounded-lg border-gray-200 focus:ring-green-500 focus:border-green-500">
+                                        <option value="">Pilih Kota</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Berat Paket</label>
+                                    <div class="relative">
+                                        <input type="text" name="weight" id="weight"
+                                               class="w-full rounded-lg border-gray-200 focus:ring-green-500 focus:border-green-500 pr-16"
+                                               placeholder="Masukkan berat">
+                                        <div class="absolute inset-y-0 right-0 flex items-center px-4 bg-green-500 text-white rounded-r-lg">
+                                            Gram
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <!-- Courier Section -->
+                    <div class="mt-8 bg-gray-50 p-6 rounded-xl border border-gray-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-truck text-green-500 text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">Pilih Jasa Pengiriman</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            @foreach ($courier as $key => $value)
+                            <div class="relative">
+                                <input type="checkbox" id="courier-{{ $key }}" name="courier[]"
+                                       value="{{ $value->code }}" class="peer hidden">
+                                <label for="courier-{{ $key }}"
+                                       class="block p-4 bg-white border-2 border-gray-200 rounded-xl cursor-pointer
+                                              transition-all hover:shadow-md
+                                              peer-checked:border-green-500 peer-checked:bg-green-50">
+                                    <div class="text-center">
+                                        <i class="fas fa-shipping-fast text-3xl text-green-500 mb-2"></i>
+                                        <h6 class="font-semibold text-gray-800">{{ $value->title }}</h6>
+                                    </div>
+                                </label>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="mt-8 text-center">
+                        <button type="button" id="submitButton"
+                                class="inline-flex items-center px-8 py-3 bg-green-500 text-white font-semibold
+                                       rounded-xl shadow-lg hover:bg-green-600 transition-all transform hover:-translate-y-0.5">
+                            <i class="fas fa-calculator mr-2"></i>
+                            Hitung Ongkir
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-  
-<script src="js/dom.js"></script>
+
+@push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    $(document).ready(function() {
+        // Initialize Select2
+        $('#province_origin, #city_origin, #city_destination').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: $(this).data('placeholder'),
+            // Custom styles untuk Select2
+            templateResult: formatOption,
+            templateSelection: formatOption
+        });
+
+        // Custom formatting untuk options
+        function formatOption(option) {
+            if (!option.id) return option.text;
+            return $(`<span class="text-gray-700">${option.text}</span>`);
+        }
+
+        // Load Provinces
+        $.get('/provinces', function(data) {
+            $('#province_origin').empty();
+            $('#province_origin').append('<option value="">Pilih Provinsi</option>');
+            $.each(data, function(key, value) {
+                $('#province_origin').append(`<option value="${value.province_id}">${value.province}</option>`);
+            });
+        });
+
+        // Load All Cities for Destination
+        $.get('/cities', function(data) {
+            $('#city_destination').empty();
+            $('#city_destination').append('<option value="">Pilih Kota Tujuan</option>');
+            $.each(data, function(key, value) {
+                $('#city_destination').append(`<option value="${value.city_id}">${value.type} ${value.city_name} (${value.province})</option>`);
+            });
+        });
+
+        // When Province is Selected
+        $('#province_origin').on('change', function() {
+            let provinceId = $(this).val();
+            if(provinceId) {
+                $.get(`/cities/${provinceId}`, function(data) {
+                    $('#city_origin').empty();
+                    $('#city_origin').append('<option value="">Pilih Kota Asal</option>');
+                    $.each(data, function(key, value) {
+                        $('#city_origin').append(`<option value="${value.city_id}">${value.type} ${value.city_name}</option>`);
+                    });
+                });
+            } else {
+                $('#city_origin').empty();
+                $('#city_origin').append('<option value="">Pilih Kota Asal</option>');
+            }
+        });
+
+        // Show error message if exists
+        @if (session('error'))
+            Swal.fire({
+                title: "Error",
+                text: "{{ session('error') }}",
+                icon: "error",
+                confirmButtonColor: "#22c55e"
+            });
+        @endif
+    });
+
+    // Submit button handler
     document.getElementById("submitButton").addEventListener("click", function() {
         Swal.fire({
-            title: "Apa Kamu Yakin?",
-            text: "Apakah datanya semua sudah benar?",
-            icon: "info",
+            title: "Konfirmasi Pengiriman",
+            text: "Pastikan data yang Anda masukkan sudah benar",
+            icon: "question",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Ya"
+            confirmButtonColor: "#22c55e",
+            cancelButtonColor: "#6b7280",
+            confirmButtonText: "Ya, Hitung Sekarang",
+            cancelButtonText: "Periksa Kembali"
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
-                    title: "Success",
-                    text: "Data berhasil dikirim",
-                    icon: "success"
-                }).then(() => {
-                    document.getElementById("ongkirForm").submit();
+                    title: "Sedang Menghitung",
+                    text: "Mohon tunggu sebentar...",
+                    icon: "info",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        document.getElementById("ongkirForm").submit();
+                    }
                 });
             }
         });
     });
-
 </script>
+
+<style>
+    /* Custom styles untuk Select2 */
+    .select2-container--bootstrap-5 .select2-selection {
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        border-color: rgba(209, 213, 219, 0.5) !important;
+    }
+
+    .select2-container--bootstrap-5 .select2-selection:focus {
+        border-color: #22c55e !important;
+        box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.25) !important;
+    }
+
+    .select2-container--bootstrap-5 .select2-dropdown {
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(8px);
+        border-color: rgba(209, 213, 219, 0.5) !important;
+    }
+
+    .select2-container--bootstrap-5 .select2-results__option--highlighted {
+        background-color: #22c55e !important;
+        color: white !important;
+    }
+
+    .select2-container--bootstrap-5 .select2-results__option--selected {
+        background-color: #dcfce7 !important;
+        color: #166534 !important;
+    }
+
+    .select2-search__field:focus {
+        border-color: #22c55e !important;
+        box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.25) !important;
+    }
+</style>
+@endpush
 @endsection
 
-  
+

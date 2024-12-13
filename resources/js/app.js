@@ -1,6 +1,7 @@
-import 'select2';
-import 'select2/dist/css/select2.min.css';
-
-
 import './bootstrap';
-import './ongkir';
+
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();
